@@ -31,7 +31,7 @@ class UsageTracker:
             state = self._state(api_key)
             while (
                 state.recent_requests
-                and now - state.recent_requests[0] > RATE_LIMIT_WINDOW_SECONDS
+                and now - state.recent_requests[0] >= RATE_LIMIT_WINDOW_SECONDS
             ):
                 state.recent_requests.popleft()
             if len(state.recent_requests) >= cfg.requests_per_minute:

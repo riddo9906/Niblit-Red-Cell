@@ -196,7 +196,9 @@ def download_result(
     try:
         uuid.UUID(result_id)
     except ValueError as exc:
-        raise HTTPException(status_code=400, detail="Invalid result_id format") from exc
+        raise HTTPException(
+            status_code=400, detail="Invalid result_id format: must be a valid UUID"
+        ) from exc
 
     result = result_store.get(result_id)
     if not result:

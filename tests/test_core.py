@@ -43,6 +43,7 @@ class CoreModuleTests(unittest.TestCase):
         self.assertIn("facebook", output)
         self.assertIn("google", output)
         self.assertIn("tiktok", output)
+        self.assertEqual(output["google"], "copy")
 
 
 if __name__ == "__main__":

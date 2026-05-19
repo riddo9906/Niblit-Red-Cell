@@ -21,7 +21,10 @@ def _create_simple_pdf(markdown_text: str) -> bytes:
     lines = markdown_text.splitlines()[:MAX_PDF_LINES]
     content_lines = ["BT", "/F1 11 Tf", "50 780 Td", "14 TL"]
     for idx, line in enumerate(lines):
-        escaped = _escape_pdf_text(line[:MAX_PDF_LINE_LENGTH])
+        truncated = line[:MAX_PDF_LINE_LENGTH]
+        if len(line) > MAX_PDF_LINE_LENGTH:
+            truncated = f"{truncated[:-3]}..."
+        escaped = _escape_pdf_text(truncated)
         if idx > 0:
             content_lines.append("T*")
         content_lines.append(f"({escaped}) Tj")
