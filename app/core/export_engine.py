@@ -26,7 +26,7 @@ def _create_simple_pdf(markdown_text: str) -> bytes:
             content_lines.append("T*")
         content_lines.append(f"({escaped}) Tj")
     content_lines.append("ET")
-    stream = "\n".join(content_lines).encode("latin-1", "ignore")
+    stream = "\n".join(content_lines).encode("latin-1", "replace")
 
     objects = []
     objects.append(b"1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj\n")

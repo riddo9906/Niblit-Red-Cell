@@ -193,6 +193,11 @@ def generate_ad_copy(
 def download_result(
     result_id: str, output_format: str = Query(..., alias="format")
 ) -> Response:
+    try:
+        uuid.UUID(result_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Invalid result_id format") from exc
+
     result = result_store.get(result_id)
     if not result:
         raise HTTPException(status_code=404, detail="Result not found")

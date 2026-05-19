@@ -30,7 +30,7 @@ def _strip_html_tags(value: str) -> str:
 
 def _sanitize_text(value: str) -> str:
     text = _strip_html_tags(value)
-    text = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", text)
+    text = "".join(ch for ch in text if ord(ch) >= 32 or ch in "\t\n\r")
     for pattern in INJECTION_PATTERNS:
         text = re.sub(pattern, "[filtered]", text, flags=re.IGNORECASE)
     text = re.sub(r"\s+", " ", text).strip()
