@@ -5,6 +5,8 @@ from threading import Lock
 
 from app.services.security import TIERS
 
+RATE_LIMIT_WINDOW_SECONDS = 60
+
 
 @dataclass
 class UsageState:
@@ -27,7 +29,10 @@ class UsageTracker:
         now = time.time()
         with self._lock:
             state = self._state(api_key)
-            while state.recent_requests and now - state.recent_requests[0] > 60:
+            while (
+                state.recent_requests
+                and now - state.recent_requests[0] > RATE_LIMIT_WINDOW_SECONDS
+            ):
                 state.recent_requests.popleft()
             if len(state.recent_requests) >= cfg.requests_per_minute:
                 return False, "Rate limit exceeded"

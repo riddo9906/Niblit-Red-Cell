@@ -1,6 +1,9 @@
 import json
 from dataclasses import dataclass
 
+MAX_PDF_LINES = 42
+MAX_PDF_LINE_LENGTH = 100
+
 
 @dataclass
 class ExportBundle:
@@ -14,10 +17,10 @@ def _escape_pdf_text(text: str) -> str:
 
 
 def _create_simple_pdf(markdown_text: str) -> bytes:
-    lines = markdown_text.splitlines()[:42]
+    lines = markdown_text.splitlines()[:MAX_PDF_LINES]
     content_lines = ["BT", "/F1 11 Tf", "50 780 Td", "14 TL"]
     for idx, line in enumerate(lines):
-        escaped = _escape_pdf_text(line[:100])
+        escaped = _escape_pdf_text(line[:MAX_PDF_LINE_LENGTH])
         if idx > 0:
             content_lines.append("T*")
         content_lines.append(f"({escaped}) Tj")

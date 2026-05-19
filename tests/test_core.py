@@ -23,7 +23,15 @@ class CoreModuleTests(unittest.TestCase):
         self.assertIn("built api services", value)
 
     def test_prompt_includes_required_fields(self):
-        prompt = build_prompt("resume", {"raw_experience_text": "A"})
+        prompt = build_prompt(
+            "resume",
+            {
+                "raw_experience_text": (
+                    "Built and scaled payment APIs, led cross-functional delivery, "
+                    "and improved reliability with monitoring and incident playbooks."
+                )
+            },
+        )
         self.assertIn("required_fields", prompt)
         self.assertEqual(
             prompt["required_fields"],

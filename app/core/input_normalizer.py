@@ -1,6 +1,8 @@
 import re
 from typing import Any
 
+# 10k characters keeps requests bounded for predictable latency/cost while still
+# fitting common resume, meeting-note, and idea-dump payload sizes.
 MAX_INPUT_LENGTH = 10000
 INJECTION_PATTERNS = [
     r"ignore\s+previous",
