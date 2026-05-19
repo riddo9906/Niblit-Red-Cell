@@ -3,17 +3,17 @@ from typing import Any
 
 MAX_INPUT_LENGTH = 10000
 INJECTION_PATTERNS = [
-    r"ignore\\s+previous",
-    r"system\\s+prompt",
-    r"developer\\s+message",
-    r"act\\s+as",
-    r"override\\s+instructions",
+    r"ignore\s+previous",
+    r"system\s+prompt",
+    r"developer\s+message",
+    r"act\s+as",
+    r"override\s+instructions",
 ]
 
 
 def _sanitize_text(value: str) -> str:
     text = re.sub(r"<[^>]+>", " ", value)
-    text = re.sub(r"[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]", "", text)
+    text = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", text)
     for pattern in INJECTION_PATTERNS:
         text = re.sub(pattern, "[filtered]", text, flags=re.IGNORECASE)
     text = re.sub(r"\\s+", " ", text).strip()
