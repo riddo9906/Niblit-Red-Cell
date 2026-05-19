@@ -13,10 +13,22 @@ class CoreModuleTests(unittest.TestCase):
         self.assertIn("[filtered]", payload["raw_experience_text"].lower())
         self.assertGreaterEqual(tokens, 1)
 
+    def test_normalizer_strips_html_tags(self):
+        payload, _ = normalize_payload(
+            {"raw_experience_text": "<div>Built <b>API</b> services</div>"}
+        )
+        value = payload["raw_experience_text"].lower()
+        self.assertNotIn("<div>", value)
+        self.assertNotIn("<b>", value)
+        self.assertIn("built api services", value)
+
     def test_prompt_includes_required_fields(self):
         prompt = build_prompt("resume", {"raw_experience_text": "A"})
         self.assertIn("required_fields", prompt)
-        self.assertTrue(prompt["required_fields"])
+        self.assertEqual(
+            prompt["required_fields"],
+            ["candidate_summary", "optimized_bullet_points", "skills"],
+        )
 
     def test_formatter_enforces_schema(self):
         output = enforce_schema("ad_copy", {"google": "copy"})

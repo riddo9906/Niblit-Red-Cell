@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.core.template_library import get_schema
+from app.core.template_library import get_schema, is_list_field
 
 
 def enforce_schema(task: str, raw_output: dict[str, Any]) -> dict[str, Any]:
@@ -9,7 +9,7 @@ def enforce_schema(task: str, raw_output: dict[str, Any]) -> dict[str, Any]:
     for field in schema:
         value = raw_output.get(field)
         if value is None:
-            value = [] if field.endswith("s") else ""
+            value = [] if is_list_field(task, field) else ""
         formatted[field] = value
     return formatted
 

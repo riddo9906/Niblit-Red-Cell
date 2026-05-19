@@ -11,6 +11,14 @@ TASK_SCHEMAS: dict[str, list[str]] = {
     "ad_copy": ["facebook", "google", "tiktok"],
 }
 
+LIST_FIELDS_BY_TASK: dict[str, set[str]] = {
+    "resume": {"optimized_bullet_points", "skills"},
+    "cover_letter": set(),
+    "meeting_summary": {"key_points", "action_items", "risks"},
+    "business_idea": set(),
+    "ad_copy": set(),
+}
+
 TASK_PROMPTS: dict[str, str] = {
     "resume": "Transform raw experience text into structured resume output.",
     "cover_letter": "Create a tailored cover letter using profile and job description.",
@@ -26,3 +34,7 @@ def get_schema(task: str) -> list[str]:
 
 def get_prompt(task: str) -> str:
     return TASK_PROMPTS[task]
+
+
+def is_list_field(task: str, field: str) -> bool:
+    return field in LIST_FIELDS_BY_TASK[task]

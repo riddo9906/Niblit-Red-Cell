@@ -30,7 +30,8 @@ class ApiKeyRegistry:
         return api_key
 
     def get_tier(self, api_key: str) -> str | None:
-        return self._store.get(api_key)
+        with self._lock:
+            return self._store.get(api_key)
 
 
 registry = ApiKeyRegistry()
