@@ -190,12 +190,12 @@ def generate_ad_copy(
 
 
 @app.get("/results/{result_id}/download")
-def download_result(result_id: str, format: str) -> Response:
+def download_result(result_id: str, output_format: str) -> Response:
     result = result_store.get(result_id)
     if not result:
         raise HTTPException(status_code=404, detail="Result not found")
 
-    fmt = format.lower()
+    fmt = output_format.lower()
     if fmt == "json":
         return Response(result.json_data, media_type="application/json")
     if fmt == "markdown":
