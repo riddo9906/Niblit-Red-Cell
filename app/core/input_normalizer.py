@@ -11,12 +11,27 @@ INJECTION_PATTERNS = [
 ]
 
 
+def _strip_html_tags(value: str) -> str:
+    out: list[str] = []
+    in_tag = False
+    for ch in value:
+        if ch == "<":
+            in_tag = True
+            continue
+        if ch == ">":
+            in_tag = False
+            continue
+        if not in_tag:
+            out.append(ch)
+    return "".join(out)
+
+
 def _sanitize_text(value: str) -> str:
-    text = re.sub(r"<[^>]+>", " ", value)
+    text = _strip_html_tags(value)
     text = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", text)
     for pattern in INJECTION_PATTERNS:
         text = re.sub(pattern, "[filtered]", text, flags=re.IGNORECASE)
-    text = re.sub(r"\\s+", " ", text).strip()
+    text = re.sub(r"\s+", " ", text).strip()
     return text[:MAX_INPUT_LENGTH]
 
 

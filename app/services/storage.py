@@ -20,7 +20,8 @@ class ResultStore:
             self._results[result_id] = result
 
     def get(self, result_id: str) -> StoredResult | None:
-        return self._results.get(result_id)
+        with self._lock:
+            return self._results.get(result_id)
 
 
 result_store = ResultStore()
