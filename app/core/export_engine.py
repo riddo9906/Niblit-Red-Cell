@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 
+# Conservative single-page line cap for the minimal built-in PDF renderer.
 MAX_PDF_LINES = 42
 MAX_PDF_LINE_LENGTH = 100
 

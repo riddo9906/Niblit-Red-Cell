@@ -3,7 +3,7 @@ import time
 import uuid
 from typing import Any
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Response
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Response
 from fastapi.responses import PlainTextResponse
 
 from app.core.ai_orchestrator import AIOrchestrator, LocalDeterministicAdapter, OpenAIAdapter
@@ -190,7 +190,9 @@ def generate_ad_copy(
 
 
 @app.get("/results/{result_id}/download")
-def download_result(result_id: str, output_format: str) -> Response:
+def download_result(
+    result_id: str, output_format: str = Query(..., alias="format")
+) -> Response:
     result = result_store.get(result_id)
     if not result:
         raise HTTPException(status_code=404, detail="Result not found")
